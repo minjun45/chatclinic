@@ -15,6 +15,34 @@ type IntakeResponse = {
   artifacts: Record<string, unknown>;
 };
 
+type SchemaProfile = {
+  name: string;
+  inferred_type: string;
+  non_empty_count: number;
+  missing_count: number;
+  missing_rate: number;
+  unique_count: number;
+  sample_values: string[];
+  numeric_summary?: {
+    min: number;
+    max: number;
+    mean: number;
+  } | null;
+};
+
+type CohortArtifact = {
+  record_count: number;
+  field_count: number;
+  categorical_breakdowns: Array<{
+    column: string;
+    top_values: Array<{ label: string; count: number }>;
+  }>;
+  numeric_breakdowns: Array<{
+    column: string;
+    summary: { min: number; max: number; mean: number } | null;
+  }>;
+};
+
 export default function Page() {
   const [apiBase, setApiBase] = useState("http://127.0.0.1:8010");
   const [attachedFile, setAttachedFile] = useState<File | null>(null);
@@ -72,21 +100,53 @@ export default function Page() {
     }
   }
 
-  function handleChatSubmit() {
+  async function handleChatSubmit() {
     const text = composerText.trim();
     if (!text) {
       return;
     }
-    setChatTurns((current) => [
-      ...current,
-      { role: "user", content: text },
-      {
-        role: "assistant",
-        content:
-          "Follow-up chat is the next implementation step for ChatClinic. The current scaffold keeps deterministic summary and Studio review in place first.",
-      },
-    ]);
+
+    if (!result) {
+      setChatTurns((current) => [
+        ...current,
+        { role: "user", content: text },
+        {
+          role: "assistant",
+          content: "Upload a clinical source first so ChatClinic has deterministic artifacts to explain.",
+        },
+      ]);
+      setComposerText("");
+      return;
+    }
+
+    setStatus("Answering...");
+    setChatTurns((current) => [...current, { role: "user", content: text }]);
     setComposerText("");
+    try {
+      const response = await fetch(`${apiBase.replace(/\/$/, "")}/api/v1/chat/artifacts`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question: text,
+          analysis: result,
+          history: chatTurns,
+          active_view: activeStudioView,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+      const payload = await response.json();
+      setChatTurns((current) => [...current, { role: "assistant", content: payload.answer }]);
+      setStatus("Summary ready");
+    } catch (caught) {
+      const message = caught instanceof Error ? caught.message : String(caught);
+      setChatTurns((current) => [
+        ...current,
+        { role: "assistant", content: `Chat request failed: ${message}` },
+      ]);
+      setStatus("Answer failed");
+    }
   }
 
   const studioArtifacts = useMemo(() => {
@@ -95,6 +155,74 @@ export default function Page() {
     }
     return result.artifacts[activeStudioView] ?? null;
   }, [activeStudioView, result]);
+
+  function renderStudioCanvas() {
+    if (!result || !activeStudioView) {
+      return <p className="mutedText">Upload a source, then open a Studio card to inspect deterministic artifacts.</p>;
+    }
+
+    if (activeStudioView === "schema") {
+      const schema = (result.artifacts.schema as { profiles?: SchemaProfile[] } | undefined)?.profiles ?? [];
+      return (
+        <div className="artifactStack">
+          {schema.map((profile) => (
+            <article key={profile.name} className="artifactCard">
+              <strong>
+                {profile.name} <span className="artifactType">{profile.inferred_type}</span>
+              </strong>
+              <p>
+                Non-empty {profile.non_empty_count} | Missing {profile.missing_count} | Unique {profile.unique_count}
+              </p>
+              <p>Sample values: {profile.sample_values.length ? profile.sample_values.join(", ") : "n/a"}</p>
+              {profile.numeric_summary ? (
+                <p>
+                  Range {profile.numeric_summary.min} to {profile.numeric_summary.max} | Mean {profile.numeric_summary.mean}
+                </p>
+              ) : null}
+            </article>
+          ))}
+        </div>
+      );
+    }
+
+    if (activeStudioView === "cohort") {
+      const cohort = result.artifacts.cohort as CohortArtifact | undefined;
+      if (!cohort) {
+        return <p className="mutedText">No cohort summary is available.</p>;
+      }
+      return (
+        <div className="artifactStack">
+          <article className="artifactCard">
+            <strong>Cohort overview</strong>
+            <p>Records: {cohort.record_count}</p>
+            <p>Fields: {cohort.field_count}</p>
+          </article>
+          {cohort.categorical_breakdowns.map((item) => (
+            <article key={item.column} className="artifactCard">
+              <strong>{item.column}</strong>
+              <ul className="artifactList">
+                {item.top_values.map((entry) => (
+                  <li key={`${item.column}-${entry.label}`}>
+                    {entry.label}: {entry.count}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+          {cohort.numeric_breakdowns.map((item) => (
+            <article key={item.column} className="artifactCard">
+              <strong>{item.column}</strong>
+              <p>
+                Min {item.summary?.min ?? "n/a"} | Max {item.summary?.max ?? "n/a"} | Mean {item.summary?.mean ?? "n/a"}
+              </p>
+            </article>
+          ))}
+        </div>
+      );
+    }
+
+    return studioArtifacts ? <pre>{JSON.stringify(studioArtifacts, null, 2)}</pre> : null;
+  }
 
   return (
     <main className="shell">
@@ -175,11 +303,7 @@ export default function Page() {
             ))}
           </div>
           <div className="studioCanvas">
-            {studioArtifacts ? (
-              <pre>{JSON.stringify(studioArtifacts, null, 2)}</pre>
-            ) : (
-              <p className="mutedText">Upload a source, then open a Studio card to inspect deterministic artifacts.</p>
-            )}
+            {renderStudioCanvas()}
           </div>
         </section>
       </div>
