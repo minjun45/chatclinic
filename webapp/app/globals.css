@@ -1,0 +1,270 @@
+:root {
+  --bg-top: #d7efff;
+  --bg-bottom: #eef8ff;
+  --panel: rgba(255, 255, 255, 0.92);
+  --border: #d9e6f2;
+  --text: #172433;
+  --muted: #5f7183;
+  --accent: #2f80ed;
+  --accent-soft: #edf5ff;
+  --user-bubble: #e7ebff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+  color: var(--text);
+}
+
+body {
+  min-height: 100vh;
+}
+
+p {
+  margin: 0;
+}
+
+.shell {
+  min-height: 100vh;
+  padding: 18px;
+}
+
+.topbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.brand {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.copyright {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1.8fr 1fr;
+  gap: 18px;
+}
+
+.panel {
+  min-height: 76vh;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow: 0 12px 28px rgba(115, 168, 205, 0.18);
+  display: flex;
+  flex-direction: column;
+}
+
+.panel h2 {
+  margin: 0 0 18px;
+}
+
+.uploadButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  border-radius: 22px;
+  border: 1px solid var(--border);
+  background: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 18px;
+}
+
+.uploadButton input {
+  display: none;
+}
+
+.fieldLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.textInput,
+.chatInput {
+  width: 100%;
+  min-height: 54px;
+  border-radius: 18px;
+  border: 1px solid #cfe0ef;
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+}
+
+.sourceCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: #fff;
+  padding: 1rem;
+  margin-top: 18px;
+}
+
+.statusBlock {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 22px;
+}
+
+.statusBlock span,
+.mutedText {
+  color: var(--muted);
+}
+
+.errorText {
+  color: #b42318;
+  margin-top: 12px;
+}
+
+.chatHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.statusPill {
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  background: #eef2f4;
+  color: #244566;
+  font-family: "Courier New", monospace;
+}
+
+.chatStream {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-right: 6px;
+}
+
+.assistantBlock {
+  line-height: 1.6;
+}
+
+.userBubble {
+  align-self: flex-end;
+  background: var(--user-bubble);
+  border-radius: 24px;
+  padding: 0.95rem 1rem;
+  max-width: 72%;
+}
+
+.chatComposer {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.sendButton {
+  width: 62px;
+  border: none;
+  border-radius: 50%;
+  background: #f97331;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.studioGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.studioCard {
+  min-height: 108px;
+  border-radius: 22px;
+  border: 1px solid var(--border);
+  background: #eef4ff;
+  padding: 18px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.studioCard:nth-child(2n) {
+  background: #f7eefc;
+}
+
+.studioCard:nth-child(3n) {
+  background: #e6f4ef;
+}
+
+.studioCard:nth-child(4n) {
+  background: #f8efd9;
+}
+
+.studioCard:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.studioCard strong,
+.studioCard span {
+  display: block;
+}
+
+.studioCard strong {
+  font-size: 1.05rem;
+  margin-bottom: 10px;
+}
+
+.studioCard span {
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.studioCardActive {
+  outline: 2px solid var(--accent);
+}
+
+.studioCanvas {
+  margin-top: 18px;
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 16px;
+  overflow: auto;
+}
+
+.studioCanvas pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 1200px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    min-height: auto;
+  }
+}
