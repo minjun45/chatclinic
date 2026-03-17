@@ -1,0 +1,29 @@
+{
+  "name": "dicom_review_tool",
+  "team": "chatclinic-core",
+  "task_type": "dicom-review",
+  "modality": "medical-image",
+  "approval_required": false,
+  "entrypoint": "run.py",
+  "description": "Build DICOM Review artifacts including metadata, grouped series, and image preview state.",
+  "keywords": [
+    "dicom",
+    "xray",
+    "ct",
+    "mri",
+    "study",
+    "series",
+    "metadata",
+    "preview",
+    "영상",
+    "시리즈",
+    "메타데이터"
+  ],
+  "recommended_stage": "post-intake",
+  "consumes": ["medical-image"],
+  "produces": ["metadata", "series", "qc"],
+  "ui_card": "DICOM Review",
+  "priority": 85,
+  "owner": "chatclinic-core",
+  "version": "1.0.0"
+}

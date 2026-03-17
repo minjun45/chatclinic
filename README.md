@@ -88,6 +88,64 @@ OPENAI_WORKFLOW_MODEL=gpt-5-nano
 OPENAI_MODEL=gpt-5-mini
 ```
 
+## Classroom plugin workflow
+
+`ChatClinic` can now discover classroom tools from the local `plugins/` folder and run them through a shared runner.
+
+Recommended teaching model:
+
+- the instructor runs one shared `ChatClinic`
+- each student team submits one plugin folder
+- students do **not** need to submit a separate Skill by default
+- the common orchestration Skill is maintained centrally by the instructor/platform
+- `ChatClinic` discovers the submitted tools and asks for approval before running them
+- tool outputs are returned as Studio artifacts
+
+Expected plugin layout:
+
+```text
+plugins/
+  team_name_tool/
+    tool.json
+    run.py
+```
+
+Runtime contract:
+
+- `tool.json` declares the tool name, team, modality, and task type
+- `run.py` is called with:
+  - `--input /path/to/input.json`
+  - `--output /path/to/output.json`
+- the output JSON should contain:
+  - `summary`
+  - `artifacts`
+  - `provenance`
+
+See:
+
+- `docs/COURSE_TOOLS.md`
+- `docs/TOOL_PLUGIN_GUIDE.md`
+- `plugins/cohort_sheet_browser/`
+
+## What students submit
+
+For the standard class assignment, student teams should submit:
+
+- `tool.json`
+- `run.py`
+- optional supporting files such as model weights, helper scripts, and `requirements.txt`
+
+They usually should **not** submit:
+
+- a separate orchestration Skill
+- a separate always-on tool server
+- a separate web UI
+
+The expected model is:
+
+- `ChatClinic` = shared UI and orchestrator
+- student team = tool/plugin implementation
+
 ## Relationship to ChatGenome
 
 `ChatGenome` remains the genomics product.

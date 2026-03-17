@@ -1,9 +1,16 @@
 .env
 .env.*
 !.env.example
+.venv/
+.tool_cache/
+runtime_uploads/
 node_modules/
 .next/
+webapp/.next.bak*/
+webapp/.next.cache*.bak/
+webapp/.next.cache*.bak*/
 *.tsbuildinfo
 __pycache__/
 *.pyc
 .DS_Store
+examples/~$*.xlsx

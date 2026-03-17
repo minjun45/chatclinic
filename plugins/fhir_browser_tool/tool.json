@@ -1,0 +1,29 @@
+{
+  "name": "fhir_browser_tool",
+  "team": "chatclinic-core",
+  "task_type": "fhir-browser",
+  "modality": "clinical-message",
+  "approval_required": false,
+  "entrypoint": "run.py",
+  "description": "Build FHIR Browser artifacts for JSON, XML, and bulk NDJSON patient data.",
+  "keywords": [
+    "fhir",
+    "patient",
+    "observation",
+    "medication",
+    "allergy",
+    "ndjson",
+    "bundle",
+    "hl7 fhir",
+    "환자",
+    "약물",
+    "관찰"
+  ],
+  "recommended_stage": "post-intake",
+  "consumes": ["clinical-message"],
+  "produces": ["patient", "allergies", "vitals", "observations", "medications", "timeline", "labs", "care_team"],
+  "ui_card": "FHIR Browser",
+  "priority": 85,
+  "owner": "chatclinic-core",
+  "version": "1.0.0"
+}

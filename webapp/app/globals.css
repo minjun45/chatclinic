@@ -1,6 +1,6 @@
 :root {
-  --bg-top: #d7efff;
-  --bg-bottom: #eef8ff;
+  --bg-top: #efe6ff;
+  --bg-bottom: #f8f1ff;
   --panel: rgba(255, 255, 255, 0.92);
   --border: #d9e6f2;
   --text: #172433;
@@ -43,6 +43,19 @@ p {
   margin-bottom: 18px;
 }
 
+.brandWrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #111827;
+}
+
+.brandIcon {
+  width: 58px;
+  height: 58px;
+  flex: 0 0 auto;
+}
+
 .brand {
   font-family: Georgia, "Times New Roman", serif;
   font-size: 3rem;
@@ -58,10 +71,11 @@ p {
   display: grid;
   grid-template-columns: 1fr 1.8fr 1fr;
   gap: 18px;
+  align-items: stretch;
 }
 
 .panel {
-  min-height: 76vh;
+  height: 76vh;
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 28px;
@@ -69,10 +83,43 @@ p {
   box-shadow: 0 12px 28px rgba(115, 168, 205, 0.18);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .panel h2 {
   margin: 0 0 18px;
+}
+
+.leftPanel {
+  gap: 16px;
+}
+
+.leftPanelSection {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.58);
+  overflow: hidden;
+}
+
+.leftPanelHeader {
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.leftPanelHeader h2 {
+  margin: 0;
+}
+
+.leftPanelBody {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 18px;
 }
 
 .uploadButton {
@@ -86,6 +133,7 @@ p {
   font-size: 1rem;
   cursor: pointer;
   margin-bottom: 18px;
+  width: 100%;
 }
 
 .uploadButton input {
@@ -119,6 +167,134 @@ p {
   background: #fff;
   padding: 1rem;
   margin-top: 18px;
+}
+
+.sourceCard > strong,
+.sourceCard > span {
+  min-width: 0;
+}
+
+.sourceCard > span {
+  color: var(--muted);
+}
+
+.sourceCardMeta {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sourceCardMeta small {
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.toolRegistryList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+}
+
+.toolRegistryStack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.toolRegistryAccordion {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.72);
+  overflow: hidden;
+}
+
+.toolRegistrySummary {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font: inherit;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.toolRegistryCount {
+  min-width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: #e9eef4;
+  color: #244566;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.toolRegistryPanel {
+  border-top: 1px solid var(--border);
+  padding: 14px 16px 16px;
+}
+
+.toolRegistryChip {
+  border: 1px solid #cfe0ef;
+  border-radius: 999px;
+  background: #eef5ff;
+  color: #22476b;
+  font: inherit;
+  font-weight: 600;
+  padding: 0.45rem 0.8rem;
+  cursor: pointer;
+}
+
+.toolUsageBlock {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 14px 16px;
+}
+
+.toolUsageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.toolUsageLog {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.toolUsageLine {
+  font-family: "Courier New", monospace;
+  font-size: 0.76rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: #536578;
+  word-break: break-word;
+}
+
+.sourceStack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sourceCardList {
+  display: block;
+}
+
+.sourceCardList strong {
+  display: block;
+  margin-bottom: 8px;
 }
 
 .statusBlock {
@@ -159,10 +335,77 @@ p {
   flex-direction: column;
   gap: 16px;
   padding-right: 6px;
+  min-height: 0;
 }
 
 .assistantBlock {
   line-height: 1.6;
+}
+
+.markdownBody > *:first-child {
+  margin-top: 0;
+}
+
+.markdownBody > *:last-child {
+  margin-bottom: 0;
+}
+
+.markdownBody p {
+  margin: 0 0 0.8rem;
+}
+
+.markdownBody ul,
+.markdownBody ol {
+  margin: 0.4rem 0 0.9rem 1.3rem;
+  padding: 0;
+}
+
+.markdownBody li {
+  margin: 0.2rem 0;
+}
+
+.markdownBody code {
+  background: #eef5ff;
+  border: 1px solid #d7e6fb;
+  border-radius: 6px;
+  padding: 0.08rem 0.35rem;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.92em;
+}
+
+.markdownBody pre {
+  overflow: auto;
+  background: #f7fbff;
+  border: 1px solid #d7e6fb;
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  margin: 0.8rem 0;
+}
+
+.markdownBody pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.markdownBody a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.markdownBody h1,
+.markdownBody h2,
+.markdownBody h3,
+.markdownBody h4 {
+  margin: 0.95rem 0 0.55rem;
+  line-height: 1.25;
+}
+
+.markdownBody blockquote {
+  margin: 0.8rem 0;
+  padding-left: 0.9rem;
+  border-left: 3px solid #cfe0ef;
+  color: var(--muted);
 }
 
 .userBubble {
@@ -175,8 +418,41 @@ p {
 
 .chatComposer {
   display: flex;
+  flex-direction: column;
   gap: 12px;
   margin-top: 18px;
+}
+
+.approvalBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid #d8e6f5;
+  border-radius: 18px;
+  background: #f6fbff;
+}
+
+.approvalActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.miniActionButton {
+  border: 1px solid #cfe0ef;
+  border-radius: 999px;
+  background: #eef5ff;
+  color: #22476b;
+  font: inherit;
+  font-weight: 700;
+  padding: 0.45rem 0.8rem;
+  cursor: pointer;
+}
+
+.miniActionButton.secondary {
+  background: #fff;
 }
 
 .sendButton {
@@ -190,19 +466,30 @@ p {
 }
 
 .studioGrid {
+  flex: 1;
+  min-height: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 160px;
   gap: 14px;
+  overflow: auto;
+  padding: 4px 6px 4px 4px;
+  align-content: start;
 }
 
 .studioCard {
-  min-height: 108px;
+  height: 160px;
   border-radius: 22px;
   border: 1px solid var(--border);
   background: #eef4ff;
   padding: 18px;
   text-align: left;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 8px;
+  overflow: hidden;
 }
 
 .studioCard:nth-child(2n) {
@@ -225,30 +512,83 @@ p {
 .studioCard strong,
 .studioCard span {
   display: block;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .studioCard strong {
-  font-size: 1.05rem;
-  margin-bottom: 10px;
+  font-size: 1rem;
+  line-height: 1.25;
+  margin-bottom: 0;
 }
 
 .studioCard span {
   color: var(--muted);
-  line-height: 1.4;
+  line-height: 1.35;
+  font-size: 0.95rem;
+  flex: 1;
+}
+
+.studioCard small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .studioCardActive {
-  outline: 2px solid var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent);
 }
 
 .studioCanvas {
   margin-top: 18px;
-  flex: 1;
+  flex: 0 0 auto;
   border: 1px solid var(--border);
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.72);
   padding: 16px;
-  overflow: auto;
+  overflow: hidden;
+}
+
+.reviewPanel {
+  margin-top: 18px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow: 0 12px 28px rgba(115, 168, 205, 0.18);
+}
+
+.reviewPanelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.reviewPanelHeader h2 {
+  margin: 0 0 8px;
+}
+
+.reviewPanelGrid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 18px;
+}
+
+.reviewPanelBody {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.78);
+  padding: 18px;
+}
+
+.reviewPanelMetadata,
+.reviewPanelViewer {
+  min-width: 0;
 }
 
 .studioCanvas pre {
@@ -277,6 +617,724 @@ p {
   margin-bottom: 8px;
 }
 
+.cohortBrowserSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cohortSectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.cohortKpiGrid,
+.cohortOverviewGrid,
+.cohortCompositionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.cohortKpiGrid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.cohortKpiCard {
+  min-height: 110px;
+}
+
+.cohortKpiLabel {
+  display: block;
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.cohortBarList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cohortBarRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cohortBarMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.95rem;
+}
+
+.cohortBarLabel {
+  min-width: 0;
+  word-break: break-word;
+}
+
+.cohortBarValue {
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.cohortBarTrack {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: #e8f0fb;
+  overflow: hidden;
+}
+
+.cohortBarFill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #7ec9ff 0%, #3f8cff 100%);
+}
+
+.cohortDomainList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cohortDomainItem {
+  border: 1px solid #e1ebf7;
+  border-radius: 16px;
+  background: #f9fbff;
+  padding: 12px 14px;
+}
+
+.cohortDomainItem p {
+  margin: 4px 0 0;
+}
+
+.cohortDomainTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.cohortSubjectList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cohortSubjectItem {
+  border: 1px solid #dfe9f6;
+  border-radius: 18px;
+  background: #f9fbff;
+  overflow: hidden;
+}
+
+.cohortSubjectSummary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 16px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.cohortSubjectSummary::-webkit-details-marker {
+  display: none;
+}
+
+.cohortSubjectPrimary {
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.cohortSubjectBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  background: #e8f1ff;
+  color: #2c63c9;
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.cohortSubjectHint {
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: right;
+}
+
+.cohortSubjectBody {
+  padding: 0 16px 16px;
+  border-top: 1px solid #e7eef8;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cohortSubjectMeta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding-top: 14px;
+}
+
+.cohortSubjectMeta > span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.cohortSubjectMeta strong,
+.cohortSubjectVisits strong {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.cohortSubjectVisits {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cohortVisitChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cohortVisitChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  background: #eef5ff;
+  color: #34547e;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.cohortGridToolbar {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cohortGridSummary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.cohortGridSearch {
+  width: 100%;
+  flex: 1 1 auto;
+  border: 1px solid #d5e2f1;
+  border-radius: 14px;
+  padding: 0.8rem 0.95rem;
+  font: inherit;
+  color: var(--text);
+  background: #fff;
+}
+
+.cohortGridPager {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.cohortPagerButton {
+  border: 1px solid #d5e2f1;
+  border-radius: 999px;
+  padding: 0.6rem 0.85rem;
+  font: inherit;
+  font-weight: 700;
+  color: var(--text);
+  background: #eef5ff;
+  cursor: pointer;
+}
+
+.cohortPagerButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.cohortGridWrap {
+  margin-top: 14px;
+  max-height: 480px;
+  overflow: auto;
+  border: 1px solid #dfe9f6;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.cohortGridTable {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.cohortGridTable thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #f4f8ff;
+  color: var(--text);
+  text-align: left;
+  font-weight: 800;
+  padding: 12px 14px;
+  border-bottom: 1px solid #dfe9f6;
+  white-space: nowrap;
+}
+
+.cohortGridTable tbody td {
+  padding: 11px 14px;
+  border-bottom: 1px solid #edf3fb;
+  color: var(--text);
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.cohortGridTable tbody tr:nth-child(even) td {
+  background: #fbfdff;
+}
+
+@media (max-width: 900px) {
+  .cohortGridToolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cohortGridPager {
+    justify-content: flex-end;
+  }
+}
+
+.metadataTable {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.metadataRow {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding-top: 8px;
+  border-top: 1px solid #edf3f9;
+}
+
+.metadataRow:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.metadataLabel {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.metadataValue {
+  color: var(--text);
+  word-break: break-word;
+}
+
+.fhirSectionBlock {
+  margin-top: 1rem;
+}
+
+.sectionSubheading {
+  display: block;
+  margin-bottom: 0.55rem;
+}
+
+.fhirAccordionList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+}
+
+.fhirAccordionItem {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #fbfdff;
+  padding: 0.15rem 0.85rem 0.85rem;
+}
+
+.fhirAccordionItem summary {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  padding: 0.8rem 0 0.6rem;
+  font-weight: 600;
+}
+
+.fhirAccordionItem summary::-webkit-details-marker {
+  display: none;
+}
+
+.accordionMeta {
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 400;
+  text-align: right;
+}
+
+.fhirSummaryHeader {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 12px;
+}
+
+.patientHero {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 0.9rem;
+}
+
+.patientAvatar {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e8f2ff;
+  color: #1d4f91;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.patientName {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.alertStack,
+.careCardStack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.allergyBadge {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  border: 1px solid #f4c7c3;
+  background: #fff2f0;
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+
+.allergyDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #dc2626;
+  margin-top: 6px;
+  flex: 0 0 auto;
+}
+
+.vitalGrid,
+.insightGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.vitalTile,
+.insightTile,
+.careCard {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fbfdff;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vitalLabel {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.fhirMainGrid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 12px;
+}
+
+.timelineSection {
+  margin-top: 1rem;
+}
+
+.timelineSectionTitle {
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+}
+
+.timelineTrackList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.timelineRow {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.timelineLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.timelineLabel small {
+  color: var(--muted);
+}
+
+.timelineBarArea {
+  position: relative;
+  height: 28px;
+  border-radius: 999px;
+  background: #f2f7fb;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.timelineBarAreaExpanded {
+  margin: 0.25rem 0 0.85rem;
+}
+
+.timelineBar {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  border-radius: 999px;
+}
+
+.eventBar {
+  background: linear-gradient(90deg, #7dd3fc, #2f80ed);
+}
+
+.medBarActive {
+  background: linear-gradient(90deg, #10b981, #059669);
+}
+
+.medBarPast {
+  background: linear-gradient(90deg, #cbd5e1, #94a3b8);
+}
+
+.timelineSummary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.timelineStatus {
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.82rem;
+}
+
+.timelineStatusCurrent {
+  background: #dbfce7;
+  color: #166534;
+}
+
+.timelineStatusPast {
+  background: #eef2f7;
+  color: #475569;
+}
+
+.labChart {
+  width: 100%;
+  height: 280px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff, #f8fbff);
+  margin: 0.9rem 0 1rem;
+}
+
+.careTeamGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.dicomPreview {
+  display: block;
+  width: 100%;
+  max-height: 240px;
+  object-fit: contain;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #f7fbff;
+  margin-bottom: 12px;
+}
+
+.dicomPreviewPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  background: #f7fbff;
+  color: var(--muted);
+  text-align: center;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.dicomViewerShell {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.96);
+  padding: 14px;
+}
+
+.dicomViewerToolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.dicomViewerControls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.viewerControlButton {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+}
+
+.viewerControlButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dicomViewerMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.viewerSelectWrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.viewerSelect {
+  min-height: 38px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #fff;
+  padding: 0 0.75rem;
+}
+
+.dicomViewerPresetRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.viewerPresetButton {
+  border: 1px solid var(--border);
+  background: var(--accent-soft);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.45rem 0.8rem;
+  cursor: pointer;
+}
+
+.viewerPresetButtonActive {
+  border-color: var(--accent);
+  background: #dcebff;
+}
+
+.dicomViewerCanvas {
+  width: 100%;
+  min-height: 360px;
+  border-radius: 16px;
+  background: #0e1726;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+}
+
+.dicomViewerCanvas:active {
+  cursor: grabbing;
+}
+
+.dicomViewerImage {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+  user-select: none;
+  transform-origin: center center;
+  transition: transform 0.08s linear;
+}
+
+.dicomViewerHint {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.dicomViewerEmpty {
+  width: calc(100% - 32px);
+  min-height: 220px;
+  margin-bottom: 0;
+}
+
 .artifactType {
   font-size: 0.85rem;
   color: var(--muted);
@@ -295,7 +1353,34 @@ p {
     grid-template-columns: 1fr;
   }
 
+  .cohortKpiGrid,
+  .cohortOverviewGrid,
+  .cohortCompositionGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .cohortSubjectSummary {
+    grid-template-columns: 1fr;
+  }
+
+  .cohortSubjectHint {
+    text-align: left;
+  }
+
+  .cohortSubjectMeta {
+    grid-template-columns: 1fr;
+  }
+
+  .reviewPanelGrid {
+    grid-template-columns: 1fr;
+  }
+
   .panel {
+    height: auto;
     min-height: auto;
+  }
+
+  .leftPanelSection {
+    min-height: 280px;
   }
 }
