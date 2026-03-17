@@ -25,6 +25,7 @@ body {
 
 body {
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 p {
@@ -34,12 +35,17 @@ p {
 .shell {
   min-height: 100vh;
   padding: 18px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .topbar {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
   margin-bottom: 18px;
 }
 
@@ -65,13 +71,20 @@ p {
 .copyright {
   font-size: 0.95rem;
   color: var(--muted);
+  max-width: min(44vw, 540px);
+  text-align: right;
+  line-height: 1.35;
+  word-break: keep-all;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1.8fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr) minmax(0, 1fr);
   gap: 18px;
   align-items: stretch;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .panel {
@@ -85,6 +98,7 @@ p {
   flex-direction: column;
   overflow: hidden;
   min-height: 0;
+  min-width: 0;
 }
 
 .panel h2 {
@@ -1351,6 +1365,11 @@ p {
 @media (max-width: 1200px) {
   .grid {
     grid-template-columns: 1fr;
+  }
+
+  .copyright {
+    max-width: 100%;
+    text-align: left;
   }
 
   .cohortKpiGrid,
