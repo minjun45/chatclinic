@@ -183,6 +183,58 @@ If your new tool introduces a new analysis path, update:
 
 - `/Users/jongcye/Documents/Codex/workspace/clinical_multimodal_workspace/skills/chatclinic-orchestrator/SKILL.md`
 
+## When to update the Skill
+
+You do **not** need to update the Skill for every tiny plugin change.
+
+Usually update the Skill when:
+
+- a new tool introduces a new analysis category
+- a new tool should be preferred over an older tool
+- a new tool requires approval before execution
+- a new tool must run before or after another tool
+- the initial chat guidance or orchestration policy should change
+
+Usually you do **not** need to update the Skill when:
+
+- you only improve the internal implementation of an existing tool
+- you fix bugs without changing when the tool should be chosen
+- you only change output formatting while keeping the same role in the workflow
+
+## How to update the Skill
+
+Edit:
+
+- `/Users/jongcye/Documents/Codex/workspace/clinical_multimodal_workspace/skills/chatclinic-orchestrator/SKILL.md`
+
+Recommended steps:
+
+1. Add the tool name to the relevant workflow or tool-order section.
+2. Add a short rule explaining when the tool should be used.
+3. Add approval guidance if the tool should not run automatically.
+4. Mention important dependencies or ordering constraints.
+5. Keep the Skill high-level; do not duplicate implementation details from `run.py`.
+
+Example update pattern:
+
+```md
+- Use `my_new_tool` for pathology review when the uploaded source is a pathology image or when the user explicitly asks for pathology interpretation.
+- Ask for approval before running `my_new_tool` if it creates a diagnostic draft.
+```
+
+## Recommended Skill fields to think about
+
+When adding a tool, check these questions:
+
+- What user questions should trigger it?
+- What modality should it match?
+- Does it depend on an earlier artifact?
+- Should it be preferred over another tool?
+- Does it need explicit approval?
+- What Studio artifact or card should it produce?
+
+If the answer to any of these changes platform behavior, update the Skill.
+
 ## Recommended collaborator checklist
 
 - `tool.json` is valid JSON
@@ -192,3 +244,4 @@ If your new tool introduces a new analysis path, update:
 - the tool can run in the shared classroom environment
 - the result contains useful structured artifacts
 - README describes dependencies and expected inputs
+- the orchestration Skill was reviewed if the new tool changes routing or policy

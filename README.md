@@ -100,6 +100,7 @@ Recommended teaching model:
 - the common orchestration Skill is maintained centrally by the instructor/platform
 - `ChatClinic` discovers the submitted tools and asks for approval before running them
 - tool outputs are returned as Studio artifacts
+- if a new tool changes routing or policy, the instructor also updates the orchestration Skill
 
 Expected plugin layout:
 

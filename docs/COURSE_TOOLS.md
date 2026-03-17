@@ -22,6 +22,23 @@ In other words:
 - `Skill` = centrally managed behavior/policy
 - `Tool plugin` = student deliverable
 
+## When the Skill should be updated
+
+The Skill is maintained centrally, but it should be reviewed whenever a new tool changes orchestration.
+
+Update the Skill when:
+
+- a new tool adds a new workflow
+- a new tool should be selected for new keywords or modalities
+- a new tool requires approval
+- a new tool depends on an earlier tool or artifact
+- a new tool should replace an older preferred tool
+
+In practice:
+
+- student teams submit the plugin
+- the instructor or maintainer updates the Skill if routing policy changes
+
 ## Goal
 
 Each team submits a **plugin tool** that can be discovered and executed by a shared runner.
@@ -169,7 +186,8 @@ Useful optional fields:
 
 1. Instructor provides a shared ChatClinic runner.
 2. Each team implements one plugin.
-3. ChatClinic proposes a tool call in chat.
-4. User approves execution.
-5. The tool runs and returns artifacts.
-6. Studio visualizes the result.
+3. Instructor reviews whether the orchestration Skill also needs an update.
+4. ChatClinic proposes a tool call in chat.
+5. User approves execution.
+6. The tool runs and returns artifacts.
+7. Studio visualizes the result.
