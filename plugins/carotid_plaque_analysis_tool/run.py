@@ -465,13 +465,11 @@ def _run(payload: dict) -> dict:
                     "image_data_url": _mask_to_data_url(long_mask),
                     "shape": list(long_mask.shape),
                     "unique_labels": [int(v) for v in sorted(set(long_mask.flatten().tolist()))],
-                    "mask": long_mask.tolist(),
                 },
                 "transverse": {
                     "image_data_url": _mask_to_data_url(trans_mask),
                     "shape": list(trans_mask.shape),
                     "unique_labels": [int(v) for v in sorted(set(trans_mask.flatten().tolist()))],
-                    "mask": trans_mask.tolist(),
                 },
             },
             "classification": {

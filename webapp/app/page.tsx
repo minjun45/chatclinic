@@ -2113,13 +2113,170 @@ export default function Page() {
               </ul>
             </article>
           ) : null}
-          <article className="artifactCard">
-            <strong>Artifacts</strong>
-            <pre>{JSON.stringify(toolResult.artifacts ?? {}, null, 2)}</pre>
-          </article>
+          {(() => {
+            const masks = (toolArtifacts.segmentation_masks as {
+              classes?: Record<string, string>;
+              longitudinal?: { image_data_url?: string; shape?: number[]; unique_labels?: number[] };
+              transverse?: { image_data_url?: string; shape?: number[]; unique_labels?: number[] };
+            } | undefined);
+            const clsResult = (toolArtifacts.classification as {
+              cls?: number; label?: string; probability?: number;
+            } | undefined);
+            if (masks) {
+              const classLabels: Record<string, string> = masks.classes ?? { "0": "background", "1": "plaque", "2": "vessel" };
+              const classColors: Record<string, string> = { "0": "#000000", "1": "#dc3232", "2": "#3264dc" };
+              return (
+                <>
+                  <article className="artifactCard">
+                    <strong>Segmentation legend</strong>
+                    <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginTop: "0.5rem" }}>
+                      {Object.entries(classLabels).map(([id, name]) => (
+                        <div key={id} style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                          <span style={{ display: "inline-block", width: 14, height: 14, borderRadius: 3, background: classColors[id] ?? "#888", border: "1px solid #555" }} />
+                          <span>{id} — {name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </article>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                    {(["longitudinal", "transverse"] as const).map((view) => {
+                      const v = masks[view];
+                      return (
+                        <article key={view} className="artifactCard">
+                          <strong style={{ textTransform: "capitalize" }}>{view}</strong>
+                          {v?.image_data_url ? (
+                            <img src={v.image_data_url} alt={`${view} segmentation mask`} style={{ width: "100%", imageRendering: "pixelated", borderRadius: 4, marginTop: "0.5rem" }} />
+                          ) : (
+                            <div className="dicomPreviewPlaceholder">No mask image available</div>
+                          )}
+                          {v?.shape ? <small style={{ marginTop: "0.4rem", display: "block" }}>Shape: {v.shape.join(" × ")}</small> : null}
+                          {v?.unique_labels ? <small>Labels: {v.unique_labels.map((l) => `${l} (${classLabels[String(l)] ?? "?"})`).join(", ")}</small> : null}
+                        </article>
+                      );
+                    })}
+                  </div>
+                  {clsResult && (() => {
+                    const isHighRisk = clsResult.cls === 1;
+                    const pct = clsResult.probability != null ? (clsResult.probability * 100).toFixed(1) : null;
+                    return (
+                      <article className="artifactCard">
+                        <strong>Vulnerability classification</strong>
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginTop: "0.75rem" }}>
+                          <span style={{ display: "inline-block", padding: "0.3rem 0.75rem", borderRadius: 6, fontWeight: 700, background: isHighRisk ? "#5c1a1a" : "#1a3d1a", color: isHighRisk ? "#f87171" : "#6ee7b7", fontSize: "1rem" }}>
+                            {clsResult.label ?? (isHighRisk ? "High-risk (RADS 3–4)" : "Low-risk (RADS 2)")}
+                          </span>
+                          {pct != null && <span style={{ color: "var(--muted, #999)" }}>probability {pct}%</span>}
+                        </div>
+                      </article>
+                    );
+                  })()}
+                </>
+              );
+            }
+            return (
+              <article className="artifactCard">
+                <strong>Artifacts</strong>
+                <pre>{JSON.stringify(toolResult.artifacts ?? {}, null, 2)}</pre>
+              </article>
+            );
+          })()}
           <article className="artifactCard">
             <strong>Provenance</strong>
             <pre>{JSON.stringify(toolResult.provenance ?? {}, null, 2)}</pre>
+          </article>
+        </div>
+      );
+    }
+
+    if (activeBaseView === "segmentation_masks") {
+      const masks = (result.artifacts?.segmentation_masks ?? studioArtifacts) as {
+        file_name?: string;
+        classes?: Record<string, string>;
+        longitudinal?: { image_data_url?: string; shape?: number[]; unique_labels?: number[] };
+        transverse?: { image_data_url?: string; shape?: number[]; unique_labels?: number[] };
+      } | null;
+      if (!masks) {
+        return <p className="mutedText">No segmentation masks are available.</p>;
+      }
+      const classLabels: Record<string, string> = masks.classes ?? { "0": "background", "1": "plaque", "2": "vessel" };
+      const classColors: Record<string, string> = { "0": "#000000", "1": "#dc3232", "2": "#3264dc" };
+      return (
+        <div className="artifactStack">
+          <article className="artifactCard">
+            <strong>Segmentation legend</strong>
+            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginTop: "0.5rem" }}>
+              {Object.entries(classLabels).map(([id, name]) => (
+                <div key={id} style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                  <span style={{ display: "inline-block", width: 14, height: 14, borderRadius: 3, background: classColors[id] ?? "#888", border: "1px solid #555" }} />
+                  <span>{id} — {name}</span>
+                </div>
+              ))}
+            </div>
+          </article>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            {(["longitudinal", "transverse"] as const).map((view) => {
+              const v = masks[view];
+              return (
+                <article key={view} className="artifactCard">
+                  <strong style={{ textTransform: "capitalize" }}>{view}</strong>
+                  {v?.image_data_url ? (
+                    <img
+                      src={v.image_data_url}
+                      alt={`${view} segmentation mask`}
+                      style={{ width: "100%", imageRendering: "pixelated", borderRadius: 4, marginTop: "0.5rem" }}
+                    />
+                  ) : (
+                    <div className="dicomPreviewPlaceholder">No mask image available</div>
+                  )}
+                  {v?.shape ? <small style={{ marginTop: "0.4rem", display: "block" }}>Shape: {v.shape.join(" × ")}</small> : null}
+                  {v?.unique_labels ? (
+                    <small>Labels present: {v.unique_labels.map((l) => `${l} (${classLabels[String(l)] ?? "?"} )`).join(", ")}</small>
+                  ) : null}
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    if (activeBaseView === "classification") {
+      const cls = (result.artifacts?.classification ?? studioArtifacts) as {
+        file_name?: string;
+        cls?: number;
+        label?: string;
+        probability?: number;
+      } | null;
+      if (!cls) {
+        return <p className="mutedText">No classification result is available.</p>;
+      }
+      const isHighRisk = cls.cls === 1;
+      const pct = cls.probability != null ? (cls.probability * 100).toFixed(1) : null;
+      return (
+        <div className="artifactStack">
+          <article className="artifactCard">
+            <strong>Vulnerability classification</strong>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginTop: "0.75rem" }}>
+              <span
+                style={{
+                  display: "inline-block",
+                  padding: "0.3rem 0.75rem",
+                  borderRadius: 6,
+                  fontWeight: 700,
+                  background: isHighRisk ? "#5c1a1a" : "#1a3d1a",
+                  color: isHighRisk ? "#f87171" : "#6ee7b7",
+                  fontSize: "1rem",
+                  letterSpacing: "0.02em",
+                }}
+              >
+                {cls.label ?? (isHighRisk ? "High-risk (RADS 3–4)" : "Low-risk (RADS 2)")}
+              </span>
+              {pct != null && <span style={{ color: "var(--muted, #999)" }}>probability {pct}%</span>}
+            </div>
+            {renderMetadataRows([
+              { label: "File", value: cls.file_name ?? "n/a" },
+              { label: "Class index", value: String(cls.cls ?? "n/a") },
+            ])}
           </article>
         </div>
       );
