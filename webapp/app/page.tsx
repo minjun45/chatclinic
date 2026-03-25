@@ -2337,7 +2337,7 @@ export default function Page() {
             <div className="leftPanelBody">
               <label className="uploadButton">
                 + Add clinical source
-                <input type="file" accept=".csv,.tsv,.xlsx,.xls,.xlsm,.json,.xml,.ndjson,.hl7,.txt,.dcm,.dicom,.png,.jpg,.jpeg,.tif,.tiff" multiple onChange={handleFileChange} />
+                <input type="file" accept=".csv,.tsv,.xlsx,.xls,.xlsm,.json,.xml,.ndjson,.hl7,.txt,.dcm,.dicom,.png,.jpg,.jpeg,.tif,.tiff,.h5,.hdf5" multiple onChange={handleFileChange} />
               </label>
               {attachedFiles.length ? (
                 <div className="sourceStack">

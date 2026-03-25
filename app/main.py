@@ -451,6 +451,8 @@ def _guess_modality(filename: str) -> tuple[str, str]:
         return "medical-image", suffix.lstrip(".")
     if suffix in {".json", ".xml", ".hl7", ".ndjson"}:
         return "clinical-message", suffix.lstrip(".")
+    if suffix in {".h5", ".hdf5"}:
+        return "medical-image", suffix.lstrip(".")
     if suffix in {".txt"}:
         lowered = filename.lower()
         if "hl7" in lowered or "fhir" in lowered:
@@ -467,6 +469,10 @@ def _is_dicom_suffix(suffix: str) -> bool:
 
 def _is_raster_image_suffix(suffix: str) -> bool:
     return suffix.lower() in {"png", "jpg", "jpeg", "tif", "tiff"}
+
+
+def _is_hdf5_suffix(suffix: str) -> bool:
+    return suffix.lower() in {"h5", "hdf5"}
 
 
 def _looks_like_hl7_v2(decoded: str) -> bool:
@@ -2574,6 +2580,44 @@ def _summarize_raster_image_group(files: list[tuple[str, bytes, str, str]]) -> I
     )
 
 
+def _summarize_hdf5(file_name: str, raw: bytes, suffix: str, source_path: Optional[str] = None) -> IntakeSummaryResponse:
+    return IntakeSummaryResponse(
+        source=UploadedSourceSummary(
+            file_name=file_name,
+            file_type=suffix,
+            modality="medical-image",
+            size_bytes=len(raw),
+            status="received",
+        ),
+        grounded_summary=(
+            f"**{file_name}** ({len(raw):,} bytes) has been received as an HDF5 medical image file. "
+            "This format is used for paired carotid B-mode ultrasound (longitudinal + transverse views). "
+            "Run `carotid_plaque_analysis_tool` to segment plaque and vessel structures and classify vulnerability (RADS 2 vs 3-4)."
+        ),
+        studio_cards=[
+            {
+                "id": "carotid_intake",
+                "title": "Carotid Ultrasound HDF5",
+                "subtitle": f"{file_name} — ready for carotid_plaque_analysis_tool",
+            }
+        ],
+        artifacts={
+            "_meta": {
+                "source_path": source_path,
+                "file_name": file_name,
+            },
+            "carotid_intake": {
+                "file_name": file_name,
+                "file_type": suffix,
+                "size_bytes": len(raw),
+                "source_path": source_path,
+                "suggested_tool": "carotid_plaque_analysis_tool",
+            },
+        },
+        sources=[],
+    )
+
+
 def _read_dicom_metadata(raw: bytes) -> dict[str, Any]:
     meta: dict[str, Any] = {
         "patient_id": "not available",
@@ -4012,6 +4056,7 @@ async def upload_source(files: list[UploadFile] = File(...)) -> IntakeSummaryRes
     parsed_responses: list[IntakeSummaryResponse] = []
     dicom_files: list[tuple[str, bytes, str, str]] = []
     raster_image_files: list[tuple[str, bytes, str, str]] = []
+    hdf5_files: list[tuple[str, bytes, str, str]] = []
     ndjson_files: list[tuple[str, bytes, str]] = []
 
     for upload in files:
@@ -4070,6 +4115,8 @@ async def upload_source(files: list[UploadFile] = File(...)) -> IntakeSummaryRes
                 dicom_files.append((file_name, raw, suffix, source_path))
             elif _is_raster_image_suffix(suffix):
                 raster_image_files.append((file_name, raw, suffix, source_path))
+            elif _is_hdf5_suffix(suffix):
+                hdf5_files.append((file_name, raw, suffix, source_path))
 
     if ndjson_files:
         try:
@@ -4140,6 +4187,9 @@ async def upload_source(files: list[UploadFile] = File(...)) -> IntakeSummaryRes
                 parsed_responses.append(_summarize_raster_image(file_name, raw, suffix, source_path=source_path))
             else:
                 parsed_responses.append(_summarize_raster_image_group(raster_image_files))
+
+    for file_name, raw, suffix, source_path in hdf5_files:
+        parsed_responses.append(_summarize_hdf5(file_name, raw, suffix, source_path=source_path))
 
     if parsed_responses:
         return _merge_responses(parsed_responses)
