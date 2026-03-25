@@ -1,0 +1,28 @@
+{
+  "name": "carotid_plaque_analysis_tool",
+  "team": "chatclinic-core",
+  "task_type": "segmentation",
+  "modality": "medical-image",
+  "approval_required": false,
+  "entrypoint": "run.py",
+  "description": "Segments carotid plaque and vessel in paired longitudinal/transverse B-mode ultrasound HDF5 files. Returns segmentation masks and RADS vulnerability classification.",
+  "keywords": [
+    "carotid",
+    "ultrasound",
+    "plaque",
+    "segmentation",
+    "hdf5",
+    "rads",
+    "vessel",
+    "longitudinal",
+    "transverse",
+    "vulnerability"
+  ],
+  "recommended_stage": "post-intake",
+  "consumes": ["carotid-hdf5"],
+  "produces": ["segmentation_masks", "classification"],
+  "ui_card": "Carotid Plaque Analysis",
+  "priority": 88,
+  "owner": "chatclinic-core",
+  "version": "1.0.0"
+}
